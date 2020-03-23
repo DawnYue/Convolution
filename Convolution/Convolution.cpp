@@ -1,20 +1,57 @@
-﻿// Convolution.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
+﻿//图像边缘处理（问题由来，图像卷积的时候边界像素，不能被卷积操作，原因在于边界像素没有完全跟kernel重叠。如3x3滤波时候有1个像素的边缘没有被处理）
+#include<opencv2/opencv.hpp>
+#include<iostream>
 
-#include <iostream>
+using namespace cv;
+using namespace std;
 
-int main()
+int main(int argc, char*argv)
 {
-    std::cout << "Hello World!\n";
+	Mat src, dst, dst1, dst2;
+	src = imread("E:\\coin.png", 0);
+	//cv::Mat srcMat = imread("E:\\IMG.jpg", 0);
+	if (!src.data)
+	{
+		printf("could not load image...\n");
+		return -1;
+	}
+	namedWindow("input", CV_WINDOW_AUTOSIZE);
+	namedWindow("border process", CV_WINDOW_AUTOSIZE);
+	imshow("input", src);
+
+	int c = 0;
+	int top = (0.05*src.rows);
+	int bottom = (0.05*src.rows);
+	int left = 0.05*src.cols;
+	int right = 0.05*src.cols;
+	int bordertype = BORDER_DEFAULT;//openCV中默认的处理方法
+	//opencv里面卷积操作实际过程：在卷积开始之前增加边缘像素，填充的像素值为0或者RGB黑色，比如3x3在四周各填充1个像素的边缘，这样就确保图像的边缘被处理，在卷积处理之后再去掉这些边缘。（填充边缘opencv里面有四种）
+	RNG rng(12345);
+	while (true)
+	{
+		c = waitKey(500);
+		//ESC键
+		if ((char)c == 27)
+		{
+			break;
+		}
+		else if ((char)c == 'r')
+		{
+			bordertype = BORDER_REPLICATE;//填充边缘像素用已知的边缘像素值。
+		}
+		else if ((char)c == 'w')
+		{
+			bordertype = BORDER_WRAP;//用另外一边的像素来补偿填充
+		}
+		else if ((char)c == 'c')
+		{
+			bordertype = BORDER_CONSTANT;//填充边缘用指定像素值
+		}
+		Scalar color = (rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+		//给图像添加边缘
+		copyMakeBorder(src, dst, top, bottom, left, right, bordertype, color);
+		imshow("border process", dst);
+	}
+	waitKey(0);
+	return 0;
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
