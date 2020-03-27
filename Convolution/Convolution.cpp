@@ -35,6 +35,7 @@ int main(int argc, char*argv)
 		{	
 			cvtColor(frame, frame, COLOR_BGR2GRAY);// 将原图像转换为灰度图像
 			threshold(frame, frame, 0, 255, CV_THRESH_OTSU);//二值化
+			convertScaleAbs(frame, frame);
 			Sobel(frame, dx, CV_16SC1, 1, 0,3);//X方向
 			Sobel(frame, dy, CV_16SC1, 0, 1,3);//Y方向
 			imshow("Sobel边缘检测dx", dx);
