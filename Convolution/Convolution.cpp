@@ -23,10 +23,17 @@ int main(int argc, char*argv)
 		return -1;
 	}
 
+	src.copyTo(g_dstImage1);
+	src.copyTo(g_dstImage2);
+	src.copyTo(g_dstImage3);
+	src.copyTo(g_dstImage4);
 
-	g_dstImage2 = src.clone();
 	blur(src, g_dstImage2, Size(g_nMeanBlurValue + 1, g_nMeanBlurValue + 1), Point(-1, -1));
 	imshow("【<2>均值滤波】", g_dstImage2);
+	GaussianBlur(src, g_dstImage3, Size(g_nGaussianBlurValue * 2 + 1, g_nGaussianBlurValue * 2 + 1), 0, 0);
+	imshow("【<3>高斯滤波】", g_dstImage3);
+	medianBlur(src, g_dstImage4, g_nMedianBlurValue * 2 + 1);
+	imshow("【<4>中值滤波】", g_dstImage4);
 	waitKey(0);
 
 	namedWindow("input", CV_WINDOW_AUTOSIZE);
