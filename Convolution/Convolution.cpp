@@ -1,7 +1,6 @@
 ﻿//图像边缘处理（问题由来，图像卷积的时候边界像素，不能被卷积操作，原因在于边界像素没有完全跟kernel重叠。如3x3滤波时候有1个像素的边缘没有被处理）
 #include<opencv2/opencv.hpp>
 #include<iostream>
-
 using namespace cv;
 using namespace std;
 
@@ -31,20 +30,16 @@ int main(int argc, char*argv)
 	{
 		c = waitKey(500);
 		//ESC键
-		if ((char)c == 27)
-		{
+		if ((char)c == 27) {
 			break;
 		}
-		else if ((char)c == 'r')
-		{
+		else if ((char)c == 'r') {
 			bordertype = BORDER_REPLICATE;//填充边缘像素用已知的边缘像素值。
 		}
-		else if ((char)c == 'w')
-		{
+		else if ((char)c == 'w') {
 			bordertype = BORDER_WRAP;//用另外一边的像素来补偿填充
 		}
-		else if ((char)c == 'c')
-		{
+		else if ((char)c == 'c') {
 			bordertype = BORDER_CONSTANT;//填充边缘用指定像素值
 		}
 		Scalar color = (rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
