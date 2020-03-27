@@ -1,8 +1,16 @@
-﻿//图像边缘处理（问题由来，图像卷积的时候边界像素，不能被卷积操作，原因在于边界像素没有完全跟kernel重叠。如3x3滤波时候有1个像素的边缘没有被处理）
-#include<opencv2/opencv.hpp>
+﻿#include<opencv2/opencv.hpp>
 #include<iostream>
 using namespace cv;
 using namespace std;
+
+//练习1
+Mat g_srcImage, g_dstImage1, g_dstImage2, g_dstImage3, g_dstImage4, g_dstImage5;
+int g_nMeanBlurValue = 10;  //均值滤波内核值
+int g_nGaussianBlurValue = 6;  //高斯滤波内核值
+int g_nMedianBlurValue = 10;  //中值滤波参数值
+static void on_MeanBlur(int, void *);		//均值块滤波器
+static void on_GaussianBlur(int, void *);			//高斯滤波器
+static void on_MedianBlur(int, void *);			//中值滤波器
 
 int main(int argc, char*argv)
 {
@@ -14,6 +22,13 @@ int main(int argc, char*argv)
 		printf("could not load image...\n");
 		return -1;
 	}
+
+
+	g_dstImage2 = src.clone();
+	blur(src, g_dstImage2, Size(g_nMeanBlurValue + 1, g_nMeanBlurValue + 1), Point(-1, -1));
+	imshow("【<2>均值滤波】", g_dstImage2);
+	waitKey(0);
+
 	namedWindow("input", CV_WINDOW_AUTOSIZE);
 	namedWindow("border process", CV_WINDOW_AUTOSIZE);
 	imshow("input", src);
@@ -49,4 +64,26 @@ int main(int argc, char*argv)
 	}
 	waitKey(0);
 	return 0;
+}
+
+//		描述：均值滤波操作的回调函数
+static void on_MeanBlur(int, void *)
+{
+	blur(g_srcImage, g_dstImage2, Size(g_nMeanBlurValue + 1, g_nMeanBlurValue + 1), Point(-1, -1));
+	imshow("【<2>均值滤波】", g_dstImage2);
+
+}
+
+//		描述：高斯滤波操作的回调函数
+static void on_GaussianBlur(int, void *)
+{
+	GaussianBlur(g_srcImage, g_dstImage3, Size(g_nGaussianBlurValue * 2 + 1, g_nGaussianBlurValue * 2 + 1), 0, 0);
+	imshow("【<3>高斯滤波】", g_dstImage3);
+}
+
+//		描述：中值滤波操作的回调函数
+static void on_MedianBlur(int, void *)
+{
+	medianBlur(g_srcImage, g_dstImage4, g_nMedianBlurValue * 2 + 1);
+	imshow("【<4>中值滤波】", g_dstImage4);
 }
