@@ -3,12 +3,9 @@
 using namespace cv;
 using namespace std;
 
-//练习1
+//练习2
 Mat src, g_dstImage1, g_dstImage2, g_dstImage3, g_dstImage4, g_dstImage5;
-int g_nMeanBlurValue = 10;  //均值滤波内核值
 int g_nGaussianBlurValue = 6;  //高斯滤波内核值
-
-
 
 int main(int argc, char*argv)
 {
@@ -29,18 +26,13 @@ int main(int argc, char*argv)
 	while (1)
 	{
 		cv::Mat frame;
-		bool rSucess = cap.read(frame);
-
-		//frame.copyTo(g_dstImage2);
+		bool rSucess = cap.read(frame);		
 		//frame.copyTo(g_dstImage3);
-		//blur(frame, g_dstImage2, Size(g_nMeanBlurValue + 1, g_nMeanBlurValue + 1), Point(-1, -1));
-		//imshow("均值滤波", g_dstImage2);
 		//GaussianBlur(frame, g_dstImage3, Size(g_nGaussianBlurValue * 2 + 1, g_nGaussianBlurValue * 2 + 1), 0, 0);
 		//imshow("高斯滤波", g_dstImage3);
 
-		frame.copyTo(g_dstImage4);
-		medianBlur(frame, g_dstImage4, 7);
-
+		frame.copyTo(g_dstImage2);		
+		blur(frame, g_dstImage2, Size(11, 11), Point(-1, -1));
 		if (!rSucess)
 		{
 			std::cout << "不能从视频中读取帧" << std::endl;
@@ -48,7 +40,7 @@ int main(int argc, char*argv)
 		}
 		else
 		{
-			imshow("中值滤波", g_dstImage4);
+			imshow("均值滤波", g_dstImage2);
 		}
 		waitKey(30); //延时30ms
 
