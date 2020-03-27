@@ -3,9 +3,8 @@
 using namespace cv;
 using namespace std;
 
-//练习2
+//练习3
 Mat src, g_dstImage1, g_dstImage2, g_dstImage3, g_dstImage4, g_dstImage5;
-int g_nGaussianBlurValue = 6;  //高斯滤波内核值
 
 int main(int argc, char*argv)
 {
@@ -27,12 +26,8 @@ int main(int argc, char*argv)
 	{
 		cv::Mat frame;
 		bool rSucess = cap.read(frame);		
-		//frame.copyTo(g_dstImage3);
-		//GaussianBlur(frame, g_dstImage3, Size(g_nGaussianBlurValue * 2 + 1, g_nGaussianBlurValue * 2 + 1), 0, 0);
-		//imshow("高斯滤波", g_dstImage3);
-
-		frame.copyTo(g_dstImage2);		
-		blur(frame, g_dstImage2, Size(11, 11), Point(-1, -1));
+		frame.copyTo(g_dstImage3);
+		GaussianBlur(frame, g_dstImage3, Size(13,13), 0, 0);
 		if (!rSucess)
 		{
 			std::cout << "不能从视频中读取帧" << std::endl;
@@ -40,7 +35,7 @@ int main(int argc, char*argv)
 		}
 		else
 		{
-			imshow("均值滤波", g_dstImage2);
+			imshow("高斯滤波", g_dstImage3);
 		}
 		waitKey(30); //延时30ms
 
