@@ -3,9 +3,21 @@
 using namespace cv;
 using namespace std;
 
-//练习4
+//练习5
 int main(int argc, char*argv)
-{
+{	
+	//HSV
+	double scale = 0.5;
+	//0-180肤色
+	double i_minH = 0;
+	double i_maxH = 20;
+	//0-255
+	double i_minS = 43;
+	double i_maxS = 255;
+	//0-255
+	double i_minV = 55;
+	double i_maxV = 255;
+
 	//实例化一个videocapture类，名称为cap
 	VideoCapture cap;
 	//cap(0)表示打开本机的第一个摄像头
@@ -23,9 +35,11 @@ int main(int argc, char*argv)
 	while (1)
 	{
 		cv::Mat frame;
-		cv::Mat dx,dy;
-		bool rSucess = cap.read(frame);		
-			
+		cv::Mat hsvMat;
+		cv::Mat detectMat;
+		cv::Mat medMat;
+		cv::Mat dipMat;
+		bool rSucess = cap.read(frame);				
 		if (!rSucess)
 		{
 			std::cout << "不能从视频中读取帧" << std::endl;
@@ -33,11 +47,23 @@ int main(int argc, char*argv)
 		}
 		else
 		{	
-			cvtColor(frame, frame, COLOR_BGR2GRAY);// 将原图像转换为灰度图像
-			Sobel(frame, dx, CV_16SC1, 1, 0,3);//X方向
-			Sobel(frame, dy, CV_16SC1, 0, 1,3);//Y方向
-			imshow("Sobel边缘检测dx", dx);
-			imshow("Sobel边缘检测dy", dy);
+			Size ResImgSiz = Size(frame.cols*scale, frame.rows*scale);
+			Mat rFrame = Mat(ResImgSiz, frame.type());
+			resize(frame, rFrame, ResImgSiz, INTER_LINEAR);
+
+			cvtColor(rFrame, hsvMat, COLOR_BGR2HSV);
+
+			rFrame.copyTo(detectMat);
+			cv::inRange(hsvMat, Scalar(i_minH, i_minS, i_minV), Scalar(i_maxH, i_maxS, i_maxV), detectMat);
+			cv::GaussianBlur(rFrame, medMat, Size(5,5), 3, 3);
+
+			rFrame.copyTo(dipMat);
+			medMat.copyTo(dipMat, detectMat);
+
+			imshow("while :in the range", detectMat);
+			imshow("display", dipMat);
+			imshow("frame", rFrame);
+			waitKey(30);
 		}
 		waitKey(30); //延时30ms
 
