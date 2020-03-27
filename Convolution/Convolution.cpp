@@ -4,7 +4,7 @@ using namespace cv;
 using namespace std;
 
 //练习3
-Mat src, g_dstImage1, g_dstImage2, g_dstImage3, g_dstImage4, g_dstImage5;
+Mat g_dstImage;
 
 int main(int argc, char*argv)
 {
@@ -26,8 +26,8 @@ int main(int argc, char*argv)
 	{
 		cv::Mat frame;
 		bool rSucess = cap.read(frame);		
-		frame.copyTo(g_dstImage3);
-		GaussianBlur(frame, g_dstImage3, Size(13,13), 0, 0);
+		frame.copyTo(g_dstImage);
+		GaussianBlur(frame, g_dstImage, Size(13,13), 0, 0);
 		if (!rSucess)
 		{
 			std::cout << "不能从视频中读取帧" << std::endl;
@@ -35,7 +35,7 @@ int main(int argc, char*argv)
 		}
 		else
 		{
-			imshow("高斯滤波", g_dstImage3);
+			imshow("高斯滤波", g_dstImage);
 		}
 		waitKey(30); //延时30ms
 
