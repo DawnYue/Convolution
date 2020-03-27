@@ -3,9 +3,7 @@
 using namespace cv;
 using namespace std;
 
-//练习3
-Mat src, g_dstImage1, g_dstImage2, g_dstImage3, g_dstImage4, g_dstImage5;
-
+//练习4
 int main(int argc, char*argv)
 {
 	//实例化一个videocapture类，名称为cap
@@ -25,17 +23,21 @@ int main(int argc, char*argv)
 	while (1)
 	{
 		cv::Mat frame;
+		cv::Mat dx,dy;
 		bool rSucess = cap.read(frame);		
-		frame.copyTo(g_dstImage3);
-		GaussianBlur(frame, g_dstImage3, Size(13,13), 0, 0);
+			
 		if (!rSucess)
 		{
 			std::cout << "不能从视频中读取帧" << std::endl;
 			break;
 		}
 		else
-		{
-			imshow("高斯滤波", g_dstImage3);
+		{	
+			cvtColor(frame, frame, COLOR_BGR2GRAY);// 将原图像转换为灰度图像
+			Sobel(frame, dx, CV_16SC1, 1, 0,3);//X方向
+			Sobel(frame, dy, CV_16SC1, 0, 1,3);//Y方向
+			imshow("Sobel边缘检测dx", dx);
+			imshow("Sobel边缘检测dy", dy);
 		}
 		waitKey(30); //延时30ms
 
