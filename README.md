@@ -1,4 +1,5 @@
 opencv简单实践5：中值滤波、均值滤波（普通滤波 高斯滤波）、边缘提取和磨皮程序
+https://www.bilibili.com/video/BV1D54y1R71a/
 
 cap.open("E:\\1.FLV");       cap.open("E:\\2.mp4"); \\\
 
